@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YES LAUNDRY - Layanan Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // Skema warna Biru (Primary) dan Kuning (Aksen)
+              primary: {
+                50: "#e0f2fe", // Biru sangat muda
+                100: "#bae6fd", // Biru sangat terang
+                200: "#7dd3fc", // Biru terang
+                300: "#38bdf8", // Biru sedang
+                400: "#0ea5e9", // Biru agak gelap
+                500: "#0077c2", // Biru default (biru langit)
+                600: "#0284c7", // Biru lebih gelap
+                700: "#003366", // Biru Gelap Utama
+                800: "#014c8c", // Biru sangat gelap
+                900: "#01325a"  // Biru paling gelap
+              },
+              accent: { // Warna aksen kuning emas
+                DEFAULT: "#FFD700", // Kuning Emas
+                light: "#FFEB3B", // Kuning terang
+                dark: "#FBC02D",   // Kuning gelap
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      /* --- Variabel CSS Kustom --- */
+      :root {
+        --primary-color: #003366; /* Biru Gelap Utama */
+        --primary-light: #0077c2; /* Biru default */
+        --accent-color: #FFD700;   /* Kuning Emas */
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+      }
+
+      /* --- Efek Visual --- */
+      .modern-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .modern-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+      }
+
+      .enhanced-shadow {
+        box-shadow: 
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05),
+          0 0 0 1px rgba(0, 0, 0, 0.02);
+      }
+
+      .enhanced-shadow:hover {
+        box-shadow: 
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04),
+          0 0 0 1px rgba(0, 0, 0, 0.02);
+      }
+
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      }
+      
+      .gradient-text {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* --- Navigasi dan Link --- */
+      .nav-link {
+        position: relative;
+        display: inline-block;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+        transition: width 0.3s ease-in-out;
+      }
+
+      .nav-link:hover {
+        color: var(--accent-color);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* --- Slider dan Scrollbar --- */
+      .slider-container {
+        scroll-snap-type: x mandatory;
+      }
+      
+      .slider-item {
+        scroll-snap-align: start;
+      }
+
+      .hide-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      /* --- WhatsApp Button Animation --- */
+      .whatsapp-button {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      /* --- Loading Screen --- */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #ffffff;
+        border-top: 5px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* --- Custom Color Overrides (penting untuk Tailwind) --- */
+      .bg-primary-700 {
+        background-color: var(--primary-color) !important; /* Menggunakan variabel CSS */
+      }
+      .text-primary-700 {
+        color: var(--primary-color) !important;
+      }
+      .border-primary-500 {
+        border-color: var(--primary-light) !important;
+      }
+      .bg-primary-600 {
+        background-color: var(--primary-light) !important;
+      }
+      .hover\:bg-primary-700:hover {
+        background-color: var(--primary-color) !important;
+      }
+      .bg-primary-50 {
+        background-color: #e0f2fe !important; /* Tailwind primary-50 */
+      }
+      .text-primary-600 {
+        color: var(--primary-light) !important;
+      }
+      .hover\:text-primary-800:hover {
+        color: #014c8c !important; /* Tailwind primary-800 */
+      }
+      .from-primary-600 {
+        --tw-gradient-from: var(--primary-light) !important;
+      }
+      .to-primary-700 {
+        --tw-gradient-to: var(--primary-color) !important;
+      }
+      .text-accent-default {
+        color: var(--accent-color);
+      }
+      .bg-accent-default {
+        background-color: var(--accent-color);
+      }
+      .border-accent-default {
+        border-color: var(--accent-color);
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50">
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <a href="https://wa.me/6287845126933" 
+       class="whatsapp-button fixed bottom-6 right-6 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50 flex items-center justify-center transform hover:scale-110"
+       target="_blank"
+       rel="noopener noreferrer">
+      <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+
+    <header class="glass-effect text-white sticky top-0 z-50 backdrop-blur-md" style="background-color: rgba(0, 51, 102, 0.95);"> 
+
+<div class="container mx-auto flex justify-between items-center px-6 py-4">
+        <div class="flex items-center">
+            <img src="image/logo-13.png" alt="Logo YES LAUNDRY" class="h-10 mr-3" />
+          <h1 class="text-xl font-bold">
+            <a href="#home">
+              <span class="text-white">YES</span>
+              <span class="text-accent-default">LAUNDRY</span> 
+            </a>
+          </h1>
+        </div>
+
+        <button class="md:hidden focus:outline-none" id="menu-btn">
+          <svg
+            class="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
+
+        <nav class="hidden md:block">
+          <ul class="flex space-x-8">
+            <li><a href="#home" class="nav-link font-medium">Beranda</a></li>
+            <li><a href="#layanan" class="nav-link font-medium">Layanan</a></li>
+            <li><a href="#keunggulan" class="nav-link font-medium">Keunggulan Kami</a></li>
+            <li><a href="#testimoni" class="nav-link font-medium">Testimoni</a></li>
+            <li><a href="#lokasi" class="nav-link font-medium">Lokasi</a></li>
+            <li><a href="#kontak" class="nav-link font-medium">Kontak</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <nav id="mobile-menu" class="md:hidden hidden px-6 pb-4">
+        <ul class="flex flex-col space-y-2">
+          <li><a href="#home" class="block nav-link font-medium">Beranda</a></li>
+          <li><a href="#layanan" class="block nav-link font-medium">Layanan</a></li>
+          <li><a href="#keunggulan" class="block nav-link font-medium">Keunggulan Kami</a></li>
+          <li><a href="#testimoni" class="block nav-link font-medium">Testimoni</a></li>
+          <li><a href="#lokasi" class="block nav-link font-medium">Lokasi</a></li>
+          <li><a href="#kontak" class="block nav-link font-medium">Kontak</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="home" class="relative overflow-hidden">
+      <div
+        class="slider-container flex overflow-x-auto w-full snap-x snap-mandatory scroll-smooth"
+        id="mainSlider"
+      >
+        <div class="slider-item flex-shrink-0 w-full h-[500px] relative">
+          <img
+            src="image/banner.jpg"
+            alt="Laundry profesional dengan mesin-mesin modern"
+            class="w-full h-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-black bg-opacity-40 flex items-center"
+          >
+            <div class="container mx-auto px-6" data-aos="fade-right">
+              <h2 class="text-white text-4xl md:text-5xl font-bold mb-4">
+                Layanan Laundry <br />Profesional & Terpercaya
+              </h2>
+              <p class="text-white text-lg mb-8 max-w-lg">
+                Kualitas terbaik dengan harga terjangkau untuk perawatan pakaian
+                Anda
+              </p>
+              <div>
+                <a
+                  href="https://wa.me/6287845126933?text=Halo,%20saya%20ingin%20menggunakan%20jasa%20laundry%20di%20YES%20LAUNDRY"
+                  class="inline-block bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Pesan Sekarang
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-item flex-shrink-0 w-full h-[500px] relative">
+          <img
+            src="image_cade66.jpg"
+            alt="Tumpukan pakaian bersih rapi"
+            class="w-full h-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-black bg-opacity-40 flex items-center"
+          >
+            <div class="container mx-auto px-6" data-aos="fade-right">
+              <h2 class="text-white text-4xl md:text-5xl font-bold mb-4">
+                Pakaian Bersih, <br />Harum & Rapih
+              </h2>
+              <p class="text-white text-lg mb-8 max-w-lg">
+                Standar kualitas tinggi untuk hasil laundry yang memuaskan
+              </p>
+              <div>
+                <a
+                  href="#layanan"
+                  class="inline-block bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                  onclick="document.getElementById('layanan').scrollIntoView({ behavior: 'smooth' }); return false;"
+                >
+                  Lihat Harga
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-item flex-shrink-0 w-full h-[500px] relative">
+          <img
+            src="image/banner1.jpeg"
+            alt="Petugas YES LAUNDRY profesional"
+            class="w-full h-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-black bg-opacity-40 flex items-center"
+          >
+            <div class="container mx-auto px-6" data-aos="fade-right">
+              <h2 class="text-white text-4xl md:text-5xl font-bold mb-4">
+                Kemasan Eksklusif <br />& Free Pickup
+              </h2>
+              <p class="text-white text-lg mb-8 max-w-lg">
+                Pelayanan ramah dari YES LAUNDRY dengan garansi kepuasan 100%
+              </p>
+              <div>
+                <a
+                  href="https://wa.me/6287845126933?text=Halo,%20saya%20ingin%20informasi%20tentang%20layanan%20laundry%20di%20YES%20LAUNDRY"
+                  class="inline-block bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Hubungi Kami
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-8 left-0 right-0">
+        <div class="container mx-auto px-6 flex justify-center space-x-4">
+          <button
+            onclick="goToSlide(0)"
+            class="w-4 h-4 bg-white bg-opacity-70 rounded-full hover:bg-opacity-100 slider-dot transform hover:scale-110 transition-all duration-300"
+          ></button>
+          <button
+            onclick="goToSlide(1)"
+            class="w-4 h-4 bg-white bg-opacity-70 rounded-full hover:bg-opacity-100 slider-dot transform hover:scale-110 transition-all duration-300"
+          ></button>
+          <button
+            onclick="goToSlide(2)"
+            class="w-4 h-4 bg-white bg-opacity-70 rounded-full hover:bg-opacity-100 slider-dot transform hover:scale-110 transition-all duration-300"
+          ></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="layanan" class="py-20 bg-gradient-to-b from-white to-gray-50">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <h2 class="text-4xl font-bold text-primary-700 mb-4">Paket Layanan YES LAUNDRY</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+            Berbagai pilihan layanan laundry berkualitas untuk semua kebutuhan
+            Anda
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12" data-aos="fade-up" data-aos-delay="200">
+          <div class="modern-card price-card bg-white rounded-lg p-8 transition-all duration-300 enhanced-shadow">
+            <div class="text-center">
+              <h3 class="text-2xl font-bold text-primary-700 mb-4">Paket Basic</h3>
+              <div class="text-4xl font-bold text-gray-800 mb-4">
+                Rp 6.000<span class="text-base font-normal text-gray-600">/kg</span>
+              </div>
+            </div>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Cuci + Setrika
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Pengerjaan 2-3 hari
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Free plastik pembungkus
+              </li>
+            </ul>
+            <a href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20Paket%20Basic%20di%20YES%20LAUNDRY" 
+               class="block text-center bg-primary-600 text-white py-2 px-4 rounded-full hover:bg-primary-700 transition-colors"
+               target="_blank">
+              Pesan Sekarang
+            </a>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-lg p-8 border-2 border-primary-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute top-4 right-4 bg-accent-default text-primary-700 px-3 py-1 rounded-full text-sm font-semibold transform rotate-12">
+              Popular!
+            </div>
+            <div class="text-center">
+              <h3 class="text-2xl font-bold text-primary-700 mb-4">Paket Express</h3>
+              <div class="text-4xl font-bold text-gray-800 mb-4">
+                Rp 8.000<span class="text-base font-normal text-gray-600">/kg</span>
+              </div>
+            </div>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Cuci + Setrika
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Selesai dalam 24 jam
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Free antar-jemput
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Pewangi premium
+              </li>
+            </ul>
+            <div class="mt-4">
+              <a 
+                href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20Paket%20Express%20di%20YES%20LAUNDRY" 
+                class="block text-center bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-6 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Pesan Sekarang
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 bg-gradient-to-br from-white to-primary-50">
+            <div class="text-center">
+              <h3 class="text-2xl font-bold text-primary-700 mb-4">Paket Premium</h3>
+              <div class="text-4xl font-bold text-gray-800 mb-4">
+                Rp 10.000<span class="text-base font-normal text-gray-600">/kg</span>
+              </div>
+            </div>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Cuci + Setrika
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Pengerjaan premium
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Free antar-jemput
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Pewangi premium
+              </li>
+              <li class="flex items-center text-gray-600">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>Perlakuan khusus
+              </li>
+            </ul>
+            <a href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20Paket%20Premium%20di%20YES%20LAUNDRY" 
+               class="block text-center bg-primary-600 text-white py-2 px-4 rounded-full hover:bg-primary-700 transition-colors"
+               target="_blank">
+              Pesan Sekarang
+            </a>
+          </div>
+        </div>
+        
+        <div class="py-16 bg-white mt-12 rounded-xl shadow-lg">
+          <h2 class="text-4xl font-bold text-primary-700 mb-12 text-center" data-aos="fade-up">Jenis Layanan YES LAUNDRY</h2>
+          <div
+            class="slider-container flex overflow-x-auto gap-6 pb-8 px-4 scroll-smooth hide-scrollbar"
+            id="servicesSliderHorizontal"
+          >
+            <div
+              class="slider-item flex-shrink-0 w-72 bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300"
+            >
+              <img
+                src="image/layanan.jpg"
+                alt="Cuci setrika"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-6">
+                <h3 class="font-bold text-xl text-primary-800 mb-2">Cuci + Setrika</h3>
+                <p class="text-gray-600 mb-4">Pakaian dicuci bersih dan disetrika rapi.</p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-primary-700">Rp 7.000/kg</span>
+                  <a
+                    href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20layanan%20Cuci%20%2B%20Setrika%20di%20YES%20LAUNDRY"
+                    class="text-primary-600 hover:text-primary-800 font-medium bg-primary-50 px-4 py-2 rounded-full transition-all hover:bg-primary-100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Pesan
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="slider-item flex-shrink-0 w-72 bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300"
+            >
+              <img
+                src="image/layanancuci.png"
+                alt="Mesin cuci modern"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-6">
+                <h3 class="font-bold text-xl text-primary-800 mb-2">Laundry Kiloan</h3>
+                <p class="text-gray-600 mb-4">Cuci standar untuk semua jenis pakaian.</p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-primary-700">Rp 5.000/kg</span>
+                  <a
+                    href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20layanan%20Laundry%20Kiloan%20di%20YES%20LAUNDRY"
+                    class="text-primary-600 hover:text-primary-800 font-medium bg-primary-50 px-4 py-2 rounded-full transition-all hover:bg-primary-100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Pesan
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="slider-item flex-shrink-0 w-72 bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300"
+            >
+              <img
+                src="image/layananstrika.jpg"
+                alt="Setrika uap profesional"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-6">
+                <h3 class="font-bold text-xl text-primary-800 mb-2">Setrika Saja</h3>
+                <p class="text-gray-600 mb-4">Pelayanan setrika khusus.</p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-primary-700">Rp 4.000/kg</span>
+                  <a
+                    href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20layanan%20Setrika%20Saja%20di%20YES%20LAUNDRY"
+                    class="text-primary-600 hover:text-primary-800 font-medium bg-primary-50 px-4 py-2 rounded-full transition-all hover:bg-primary-100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Pesan
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="slider-item flex-shrink-0 w-72 bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300"
+            >
+              <img
+                src="image_cade66.jpg"
+                alt="Layanan khusus untuk pakaian spesial"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-6">
+                <h3 class="font-bold text-xl text-primary-800 mb-2">Layanan Khusus</h3>
+                <p class="text-gray-600 mb-4">Perawatan spesial untuk bahan khusus.</p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-primary-700">Mulai Rp 15.000</span>
+                  <a
+                    href="https://wa.me/6287845126933?text=Halo,%20saya%20tertarik%20dengan%20Layanan%20Khusus%20di%20YES%20LAUNDRY"
+                    class="text-primary-600 hover:text-primary-800 font-medium bg-primary-50 px-4 py-2 rounded-full transition-all hover:bg-primary-100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Pesan
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="keunggulan" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <h2 class="text-4xl font-bold gradient-text mb-4">
+            Mengapa Memilih YES LAUNDRY?
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+            Kami menjamin pakaian Anda mendapatkan perawatan terbaik dengan
+            standar kualitas tinggi.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div
+            class="p-6 modern-card rounded-xl text-center enhanced-shadow"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <i class="fas fa-hand-holding-water text-5xl text-primary-700 mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">
+              Kualitas Terjamin
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Menggunakan deterjen premium dan proses pencucian yang higienis.
+            </p>
+          </div>
+
+          <div
+            class="p-6 modern-card rounded-xl text-center enhanced-shadow"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <i class="fas fa-truck text-5xl text-primary-700 mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">
+              Antar Jemput Gratis
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Layanan *Free Pickup* untuk area tertentu (hubungi kami).
+            </p>
+          </div>
+
+          <div
+            class="p-6 modern-card rounded-xl text-center enhanced-shadow"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <i class="fas fa-shipping-fast text-5xl text-primary-700 mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">
+              Proses Cepat
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Tersedia layanan ekspres selesai dalam waktu kurang dari 24 jam.
+            </p>
+          </div>
+
+          <div
+            class="p-6 modern-card rounded-xl text-center enhanced-shadow"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <i class="fas fa-medal text-5xl text-primary-700 mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">
+              Garansi Pengerjaan
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Jika hasil tidak memuaskan, YES LAUNDRY siap mencuci ulang gratis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimoni" class="py-20 bg-gray-50">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <h2 class="text-4xl font-bold text-primary-700 mb-4">
+            Apa Kata Pelanggan YES LAUNDRY?
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+            Kepuasan Anda adalah prioritas kami.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="p-8 modern-card bg-white rounded-xl shadow-lg border-t-4 border-accent-default"
+            data-aos="fade-right"
+          >
+            <div class="flex mb-4">
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+            </div>
+            <p class="text-gray-700 italic mb-4">
+              "Pelayanan cepat, hasil bersih, dan setrikaannya rapi banget!
+              Pewanginya juga tahan lama. Recomended!"
+            </p>
+            <p class="font-semibold text-primary-700">- Rina S.</p>
+          </div>
+
+          <div
+            class="p-8 modern-card bg-white rounded-xl shadow-lg border-t-4 border-accent-default"
+            data-aos="fade-up"
+          >
+            <div class="flex mb-4">
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star-half-alt text-yellow-400"></i>
+            </div>
+            <p class="text-gray-700 italic mb-4">
+              "Sangat terbantu dengan layanan antar jemput gratisnya. Pakaian
+              selalu kembali on time dan harum."
+            </p>
+            <p class="font-semibold text-primary-700">- Budi H.</p>
+          </div>
+
+          <div
+            class="p-8 modern-card bg-white rounded-xl shadow-lg border-t-4 border-accent-default"
+            data-aos="fade-left"
+          >
+            <div class="flex mb-4">
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+            </div>
+            <p class="text-gray-700 italic mb-4">
+              "Kain-kain khusus seperti jas dan gaun ditangani dengan sangat
+              profesional. Tidak ada kerusakan sama sekali."
+            </p>
+            <p class="font-semibold text-primary-700">- Dewi K.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lokasi" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12" data-aos="fade-up">
+          <h2 class="text-4xl font-bold text-primary-700 mb-4">
+            Temukan Lokasi YES LAUNDRY
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+            Kami siap melayani di lokasi utama kami.
+          </p>
+        </div>
+
+        <div class="modern-card p-4 rounded-xl shadow-2xl" data-aos="fade-up" data-aos-delay="200">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.67890!2d106.8271!3d-6.2088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ5JzI2LjAiTiAxMDbCsDUzJzI5LjQiRQ!5e0!3m2!1sen!2sid!4v1678886400000" 
+            width="100%"
+            height="450"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="rounded-lg"
+          ></iframe>
+          </div>
+
+        <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="300">
+            <a href="https://maps.app.goo.gl/YourActualLocationLink" 
+               class="inline-block bg-accent-default text-primary-700 font-bold py-3 px-8 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+               target="_blank"
+               rel="noopener noreferrer">
+              <i class="fas fa-route mr-2"></i> Dapatkan Petunjuk Arah
+            </a>
+        </div>
+      </div>
+    </section>
+
+    <footer id="kontak" class="bg-primary-700 text-white py-16">
+      <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div data-aos="fade-up">
+            <img src="image/logo-13.png" alt="Logo YES LAUNDRY" class="h-10 mb-4" />
+          <p class="text-gray-300 text-sm mb-4">
+            YES LAUNDRY, jasa laundry kiloan dan satuan profesional, menjamin kebersihan dan
+            kerapihan pakaian Anda.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-300 hover:text-accent-default transition-colors"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" class="text-gray-300 hover:text-accent-default transition-colors"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" class="text-gray-300 hover:text-accent-default transition-colors"
+              ><i class="fab fa-twitter"></i
+            ></a>
+          </div>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="100">
+          <h4 class="text-xl font-semibold mb-4 text-accent-default">Tautan</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="#home" class="text-gray-300 hover:text-white transition-colors">Beranda</a>
+            </li>
+            <li>
+              <a href="#layanan" class="text-gray-300 hover:text-white transition-colors">Layanan</a>
+            </li>
+            <li>
+              <a href="#keunggulan" class="text-gray-300 hover:text-white transition-colors">Keunggulan</a>
+            </li>
+            <li>
+              <a href="#testimoni" class="text-gray-300 hover:text-white transition-colors">Testimoni</a>
+            </li>
+            <li>
+              <a href="#lokasi" class="text-gray-300 hover:text-white transition-colors">Lokasi</a>
+            </li>
+          </ul>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="200">
+          <h4 class="text-xl font-semibold mb-4 text-accent-default">Layanan</h4>
+          <ul class="space-y-2 text-gray-300 text-sm">
+            <li>Cuci + Setrika Kiloan</li>
+            <li>Laundry Satuan (Khusus)</li>
+            <li>Antar Jemput</li>
+            <li>Setrika Saja</li>
+          </ul>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="300">
+          <h4 class="text-xl font-semibold mb-4 text-accent-default">Hubungi YES LAUNDRY</h4>
+          <p class="text-gray-300 mb-2">
+            <i class="fas fa-map-marker-alt mr-2 text-accent-default"></i> [Alamat Cabang Utama Anda]
+          </p>
+          <p class="text-gray-300 mb-2">
+            <i class="fas fa-phone-alt mr-2 text-accent-default"></i> (021) 1234 5678
+          </p>
+          <p class="text-gray-300">
+            <i class="fas fa-envelope mr-2 text-accent-default"></i> info@yeslaundry.com
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-gray-600 pt-8 text-center">
+        <p class="text-gray-400 text-sm">
+          © 2024 YES LAUNDRY. Hak Cipta Dilindungi. Dibuat dengan
+          <i class="fas fa-heart text-accent-default"></i>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // 1. Logika Menu Mobile
+      const menuBtn = document.getElementById("menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const navLinks = document.querySelectorAll(".nav-link");
+      
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+      
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden"); 
+        });
+      });
+
+      // 2. Inisialisasi AOS (Animation On Scroll)
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
+
+      // 3. Hilangkan Loading Screen setelah 1 detik
+      window.addEventListener("load", function () {
+        const loadingScreen = document.getElementById("loadingScreen");
+        setTimeout(() => {
+          loadingScreen.style.opacity = "0";
+          setTimeout(() => {
+            loadingScreen.style.display = "none";
+          }, 500);
+        }, 1000);
+      });
+
+      // 4. Logika Slider Hero
+      const slider = document.getElementById("mainSlider");
+      const dots = document.querySelectorAll(".slider-dot");
+      let currentSlide = 0;
+
+      function goToSlide(index) {
+        slider.scrollTo({
+          left: index * slider.clientWidth,
+          behavior: 'smooth'
+        });
+        updateDots(index);
+        currentSlide = index;
+      }
+
+      function updateDots(index) {
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('bg-opacity-100', 'scale-110');
+            dot.classList.remove('bg-opacity-70');
+          } else {
+            dot.classList.remove('bg-opacity-100', 'scale-110');
+            dot.classList.add('bg-opacity-70');
+          }
+        });
+      }
+      
+      slider.addEventListener('scroll', () => {
+          const scrollLeft = slider.scrollLeft;
+          const slideWidth = slider.clientWidth;
+          const index = Math.round(scrollLeft / slideWidth);
+          if (index !== currentSlide) {
+              updateDots(index);
+              currentSlide = index;
+          }
+      });
+
+      updateDots(0);
+    </script>
+  </body>
+</html>
